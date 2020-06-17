@@ -8,13 +8,23 @@ SUPPORTED_BROWSERS = ['chrome', 'firefox']
 
 
 @pytest.fixture
-def browser(config_browser, config_base_url):
-    if config_browser == "firefox":
-        browser = webdriver.Firefox(executable_path="./drivers/geckodriver.exe")
-    elif config_browser == "chrome":
-        browser = webdriver.Chrome(executable_path="./drivers/chromedriver.exe")
+def browser(config_os, config_browser, config_base_url):
+    if config_os == "win":
+        if config_browser == "firefox":
+            browser = webdriver.Firefox(executable_path="./drivers/geckodriver.exe")
+        elif config_browser == "chrome":
+            browser = webdriver.Chrome(executable_path="./drivers/chromedriver.exe")
+        else:
+            raise Exception(f'"{config_browser}" is not a supported browser')
+    elif config_os == "linux":
+        if config_browser == "firefox":
+            browser = webdriver.Firefox(executable_path="./drivers/geckodriver")
+        elif config_browser == "chrome":
+            browser = webdriver.Chrome(executable_path="./drivers/chromedriver")
+        else:
+            raise Exception(f'"{config_browser}" is not a supported browser')
     else:
-        raise Exception(f'"{config_browser}" is not a supported browser')
+        raise Exception(f"{config_os} is not supported OS")
 
     browser.maximize_window()
     browser.get(config_base_url)
@@ -33,6 +43,11 @@ def config():
     with open(CONFIG_PATH) as config_file:
         data = json.load(config_file)
         return data
+
+
+@pytest.fixture
+def config_os(config):
+    return config['os']
 
 
 @pytest.fixture
