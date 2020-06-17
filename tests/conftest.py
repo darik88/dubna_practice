@@ -11,16 +11,16 @@ SUPPORTED_BROWSERS = ['chrome', 'firefox']
 def browser(config_os, config_browser, config_base_url):
     if config_os == "win":
         if config_browser == "firefox":
-            browser = webdriver.Firefox(executable_path="./drivers/geckodriver.exe")
+            browser = webdriver.Firefox(executable_path='./drivers/geckodriver.exe')
         elif config_browser == "chrome":
-            browser = webdriver.Chrome(executable_path="./drivers/chromedriver.exe")
+            browser = webdriver.Chrome(executable_path='./drivers/chromedriver.exe')
         else:
             raise Exception(f'"{config_browser}" is not a supported browser')
     elif config_os == "linux":
         if config_browser == "firefox":
-            browser = webdriver.Firefox(executable_path="./drivers/geckodriver")
+            browser = webdriver.Firefox(executable_path='./drivers/geckodriver')
         elif config_browser == "chrome":
-            browser = webdriver.Chrome(executable_path="./drivers/chromedriver")
+            browser = webdriver.Chrome(executable_path='./drivers/chromedriver')
         else:
             raise Exception(f'"{config_browser}" is not a supported browser')
     else:
