@@ -1,6 +1,4 @@
 {
-  "os": "linux",
-  "browser": "firefox",
   "base_url": "http://itrack-rf.dev-og.com",
   "user": "god",
   "password": "123123",

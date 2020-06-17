@@ -4,28 +4,20 @@ from selenium import webdriver
 from pages.loginPage import LoginPage
 
 CONFIG_PATH = './configs/config.json'
-SUPPORTED_BROWSERS = ['chrome', 'firefox']
+
+capabilities = {
+    "browserName": "firefox",
+    "version": "76.0",
+    "enableVNC": True,
+    "enableVideo": False
+}
 
 
 @pytest.fixture
-def browser(config_os, config_browser, config_base_url):
-    if config_os == "win":
-        if config_browser == "firefox":
-            browser = webdriver.Firefox(executable_path='./drivers/geckodriver.exe')
-        elif config_browser == "chrome":
-            browser = webdriver.Chrome(executable_path='./drivers/chromedriver.exe')
-        else:
-            raise Exception(f'"{config_browser}" is not a supported browser')
-    elif config_os == "linux":
-        if config_browser == "firefox":
-            browser = webdriver.Firefox(executable_path='./drivers/geckodriver')
-        elif config_browser == "chrome":
-            browser = webdriver.Chrome(executable_path='./drivers/chromedriver')
-        else:
-            raise Exception(f'"{config_browser}" is not a supported browser')
-    else:
-        raise Exception(f"{config_os} is not supported OS")
-
+def browser(config_base_url):
+    browser = webdriver.Remote(
+        command_executor="http://192.168.1.100:4444/wd/hub",
+        desired_capabilities=capabilities)
     browser.maximize_window()
     browser.get(config_base_url)
     yield browser
@@ -43,20 +35,6 @@ def config():
     with open(CONFIG_PATH) as config_file:
         data = json.load(config_file)
         return data
-
-
-@pytest.fixture
-def config_os(config):
-    return config['os']
-
-
-@pytest.fixture
-def config_browser(config):
-    if "browser" not in config:
-        raise Exception('The config file does not contain "browser"')
-    elif config['browser'] not in SUPPORTED_BROWSERS:
-        raise Exception(f'"{config["browser"]}" is not a supported browser')
-    return config['browser']
 
 
 @pytest.fixture
