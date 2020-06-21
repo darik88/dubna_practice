@@ -20,26 +20,16 @@ capabilities = {
     "enableVideo": False
 }
 
-capabilities2 = {
-    "browserName": "chrome",
-    "version": "83.0",
-    "enableVNC": True,
-    "enableVideo": False
-}
-
-browsers = [capabilities, capabilities2]
-
 
 @pytest.fixture
 def browser(config_base_url):
-    for elem in browsers:
-        browser = webdriver.Remote(
-            command_executor="http://192.168.1.100:4444/wd/hub",
-            desired_capabilities=elem)
-        browser.maximize_window()
-        browser.get(config_base_url)
-        yield browser
-        browser.quit()
+    browser = webdriver.Remote(
+        command_executor="http://192.168.1.100:4444/wd/hub",
+        desired_capabilities=capabilities)
+    browser.maximize_window()
+    browser.get(config_base_url)
+    yield browser
+    browser.quit()
 
 
 @pytest.fixture
