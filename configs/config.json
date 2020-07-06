@@ -1,5 +1,5 @@
 {
-  "base_url": "http://itrack-rf.dev-og.com",
+  "base_url": "",
   "user": "god",
   "password": "123123",
   "incorrect_password": "abcdef"
